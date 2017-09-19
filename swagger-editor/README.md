@@ -34,44 +34,7 @@ Step 1/11 : FROM alpine:3.4
 Digest: sha256:833ad81ace8277324f3ca8c91c02bdcf1d13988d8ecf8a3f97ecdd69d0390ce9
 Status: Downloaded newer image for alpine:3.4
  ---> f64255f97787
-Step 2/11 : MAINTAINER fehguy
- ---> Running in 543ea49d7568
- ---> 042e2065efd0
-Removing intermediate container 543ea49d7568
-Step 3/11 : RUN apk add --update nginx
- ---> Running in b902a16500e7
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.4/main/x86_64/APKINDEX.tar.gz
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.4/community/x86_64/APKINDEX.tar.gz
-(1/3) Installing nginx-common (1.10.3-r0)
-Executing nginx-common-1.10.3-r0.pre-install
-(2/3) Installing pcre (8.38-r1)
-(3/3) Installing nginx (1.10.3-r0)
-Executing busybox-1.24.2-r13.trigger
-OK: 6 MiB in 14 packages
- ---> 40c150501113
-Removing intermediate container b902a16500e7
-Step 4/11 : RUN mkdir -p /run/nginx
- ---> Running in b441dfb3ff8e
- ---> 96d031a270ef
-Removing intermediate container b441dfb3ff8e
-Step 5/11 : COPY nginx.conf /etc/nginx/
- ---> fa1c7282e45b
-Removing intermediate container 3bf0fc000804
-Step 6/11 : COPY ./index.html /usr/share/nginx/html/
- ---> 7415c08d7791
-Removing intermediate container ccd86c42fe93
-Step 7/11 : ADD ./dist/*.js /usr/share/nginx/html/dist/
- ---> 10965b12ad98
-Removing intermediate container e6b259095ecb
-Step 8/11 : ADD ./dist/*.css /usr/share/nginx/html/dist/
- ---> 068949276286
-Removing intermediate container 922981b648fc
-Step 9/11 : ADD ./docker-run.sh /usr/share/nginx/
- ---> ef48c7b441e4
-Removing intermediate container 7b564cf58d94
-Step 10/11 : EXPOSE 8080
- ---> Running in e4535e4a7b89
- ---> 30313f108daf
+...
 Removing intermediate container e4535e4a7b89
 Step 11/11 : CMD sh /usr/share/nginx/docker-run.sh
  ---> Running in a98dad172cbf
@@ -83,7 +46,7 @@ Successfully tagged swagger-editor:latest
 
 At this point the Swagger Editor should be running on port 8080 of the localhost.
 
-URL: [http://localhost:8080](http://localhost:8080)
+URL: [http://localhost:8000](http://localhost:8000)
 
 ### Removing the Editor
 
