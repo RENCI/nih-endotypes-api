@@ -9,7 +9,7 @@ As defined using [OpenAPI 2.0 Specification](https://github.com/OAI/OpenAPI-Spec
 - INPUT: in body
 
 ```
-@description - list of CMAQ exposures
+@description - list of endotype elements
 @body
 
 {
