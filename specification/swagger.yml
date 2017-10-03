@@ -11,7 +11,7 @@ info:
   license:
     name: MIT
     url: 'http://opensource.org/licenses/MIT'
-host: 'localhost:5000'
+host: 'endotypes.renci.org'
 basePath: /v1
 schemes:
   - https
@@ -77,8 +77,6 @@ definitions:
         units:
           type: string
         exposureType:
-          type: string
-        timeWindow:
           type: string
   visit:
     type: object
