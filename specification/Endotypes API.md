@@ -25,8 +25,7 @@ As defined using [OpenAPI 2.0 Specification](https://github.com/OAI/OpenAPI-Spec
 			exposure: [
 				​​value
 				units
-				​​​exposure_type
-				time_window
+				​​​exposure_type				
 			​]
 		}
 	...
