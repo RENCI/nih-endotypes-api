@@ -1,0 +1,102 @@
+---
+swagger: "2.0"
+info:
+  description: "NIH Endotypes API"
+  version: "1.0.0"
+  title: "NIH Endotypes API"
+  termsOfService: "None"
+  contact:
+    name: "Hong Yi"
+    url: "https://github.com/renci/nih-endotypes-api"
+    email: "hongyi@renci.org"
+  license:
+    name: "MIT"
+    url: "http://opensource.org/licenses/MIT"
+host: "localhost:7000"
+basePath: "/v1"
+schemes:
+- "https"
+paths:
+  /endotypes:
+    get:
+      summary: "list of endotypes"
+      description: "list of endotypes"
+      operationId: "endotypes_get"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/body"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/inline_response_200"
+        400:
+          description: "Invalid parameter"
+        404:
+          description: "No endotypes found"
+        500:
+          description: "Server error"
+      x-swagger-router-controller: "controllers.default_controller"
+definitions:
+  exposure:
+    type: "array"
+    items:
+      $ref: "#/definitions/exposure_inner"
+  visit:
+    type: "object"
+    properties:
+      time:
+        type: "string"
+      zip:
+        type: "string"
+      visitType:
+        type: "string"
+      icdCode:
+        type: "string"
+      exposures:
+        $ref: "#/definitions/exposure"
+  body:
+    properties:
+      dateOfBirth:
+        type: "string"
+      race:
+        type: "string"
+      sex:
+        type: "string"
+      visit:
+        type: "array"
+        items:
+          $ref: "#/definitions/visit"
+  endotypes_periods:
+    properties:
+      startTime:
+        type: "string"
+        format: "date-time"
+      endTime:
+        type: "string"
+        format: "date-time"
+  inline_response_200:
+    properties:
+      endotypeID:
+        type: "string"
+      endotypeDescription:
+        type: "string"
+      periods:
+        type: "array"
+        items:
+          $ref: "#/definitions/endotypes_periods"
+  exposure_inner:
+    properties:
+      value:
+        type: "string"
+      units:
+        type: "string"
+      exposureType:
+        type: "string"

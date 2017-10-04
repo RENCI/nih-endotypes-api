@@ -1,0 +1,10 @@
+[connexion]
+server =
+debug = True
+port = 5000
+keyfile =
+certfile =
+
+[sys-path]
+controllers = /PATH_TO/nih-enodotypes-api/server/controllers
+

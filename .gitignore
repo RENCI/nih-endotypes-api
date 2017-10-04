@@ -1,1 +1,6 @@
+swagger-editor/swagger-editor/
 .idea/
+.DS_Store
+connexion.ini
+venv/
+__pycache__/
