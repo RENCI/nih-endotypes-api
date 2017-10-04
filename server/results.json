@@ -1,0 +1,12 @@
+[
+  {
+    "endotype_id": "E0",
+    "endotype_description": "The patient is most likely to have 0 ER adminssion within the next twelve months based on the data",
+    "periods": [
+      {
+        "startTime": "2017-10-04T19:03:45.876Z",
+        "endTime": "2017-10-04T21:03:45.876Z"
+      }
+    ]
+  }
+]
