@@ -26,8 +26,18 @@ def endotypes_get(input):
         # for v in input.visits:
         #    str += v.icd_code + ', ' + v.time + ', ' + v.visit_type + ', ' + v.zip
         #    str += v.exposure.value + ', ' + v.exposure.units + ', ' + v.exposure.exposure_type
-        
-        return connexion.request.get_json()
+
+        result = ''
+        with open('results.json', 'r') as f:
+            result = json.load(f)
+
+        if result:
+            ret_dict = {"input": connexion.request.get_json(),
+                        "output": result}
+        else:
+            ret_dict = connexion.request.get_json()
+
+        return ret_dict
 
     else:
         return "Please fill out a JSON request body as input before making the request."
