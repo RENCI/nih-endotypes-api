@@ -2,8 +2,8 @@
 
 from __future__ import absolute_import
 
-from server.models.body import Body
-from server.models.inline_response200 import InlineResponse200
+from models.inline_response200 import InlineResponse200
+from models.input import Input
 from . import BaseTestCase
 from six import BytesIO
 from flask import json
@@ -16,12 +16,12 @@ class TestDefaultController(BaseTestCase):
         """
         Test case for endotypes_get
 
-        list of endotypes
+        Get list of endotypes based on input
         """
-        body = Body()
+        input = Input()
         response = self.client.open('/v1/endotypes',
-                                    method='GET',
-                                    data=json.dumps(body),
+                                    method='POST',
+                                    data=json.dumps(input),
                                     content_type='application/json')
         self.assert200(response, "Response body is : " + response.data.decode('utf-8'))
 

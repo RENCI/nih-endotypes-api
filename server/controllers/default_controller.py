@@ -1,6 +1,6 @@
 import connexion
 import json
-from models.body import Body
+from models.input import Input
 from models.inline_response200 import InlineResponse200
 from datetime import date, datetime
 from typing import List, Dict
@@ -8,21 +8,26 @@ from six import iteritems
 from util import deserialize_date, deserialize_datetime
 
 
-def endotypes_get(body=None):
+def endotypes_get(input):
     """
     list of endotypes
-    :param body:
-    :type body: dict | bytes
+    :param input:
+    :type input: dict | bytes
 
     :rtype: List[InlineResponse200]
     """
     if connexion.request.is_json:
         # for some reason connexion.request.get_json() returns null, need to figure out later
-        body = Body.from_dict(connexion.request.get_json())
-        #if connexion.request.get_json():
-        #    return json.dumps(connexion.request.get_json())
-        #else:
-        #    return "Null"
-        with open('results.json', 'r') as f:
-            data = json.load(f)
-            return json.dumps(data)
+        input = Input.from_dict(connexion.request.get_json())
+        # input values can be retrieved by
+        # input.date_of_birth
+        # input.race
+        # input.sex
+        # for v in input.visits:
+        #    str += v.icd_code + ', ' + v.time + ', ' + v.visit_type + ', ' + v.zip
+        #    str += v.exposure.value + ', ' + v.exposure.units + ', ' + v.exposure.exposure_type
+        
+        return connexion.request.get_json()
+
+    else:
+        return "Please fill out a JSON request body as input before making the request."
