@@ -24,7 +24,7 @@ def endotypes_get(input):
         # input.race
         # input.sex
         # for v in input.visits:
-        #    str += v.icd_code + ', ' + v.time + ', ' + v.visit_type + ', ' + v.zip
+        #    str += v.icd_codes + ', ' + v.time + ', ' + v.visit_type + ', ' + v.lat + ', ' + v.lon
         #    str += v.exposure.value + ', ' + v.exposure.units + ', ' + v.exposure.exposure_type
 
         result = ''

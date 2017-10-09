@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "NIH Endotypes API"
+  description: "NIH Endotypes API - Refer to <a href=\"https://docs.google.com/document/d/1gtkYf6ITfexxEQj9WYPW8iqskT-tZh84LnhtLTmboAA/edit\">User Manual</a> on how to use the API."
   version: "1.0.0"
   title: "NIH Endotypes API"
   termsOfService: "None"
@@ -59,11 +59,17 @@ definitions:
     properties:
       time:
         type: "string"
-      zip:
-        type: "string"
+        format: "date-time"
+      lat:
+        type: "number"
+        format: "float"
+      lon:
+        type: "number"
+        format: "float"
       visit_type:
         type: "string"
-      icd_code:
+        pattern: "^(INPATIENT|OUTPATIENT|EMERGENCY|inpatient|outpatient|emergency)$"
+      icd_codes:
         type: "string"
       exposure:
         $ref: "#/definitions/exposure"
@@ -71,10 +77,15 @@ definitions:
     properties:
       date_of_birth:
         type: "string"
+        format: "date"
       race:
         type: "string"
       sex:
         type: "string"
+        pattern: "^(F|M|Female|Male|FEMALE|MALE)$"
+      model_type:
+        type: "string"
+        pattern: "^[M|m][0-9]$"
       visits:
         type: "array"
         items:
@@ -92,6 +103,8 @@ definitions:
       endotype_id:
         type: "string"
       endotype_description:
+        type: "string"
+      endotype_evidence:
         type: "string"
       periods:
         type: "array"
