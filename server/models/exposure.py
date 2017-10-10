@@ -90,8 +90,6 @@ class Exposure(Model):
         :param units: The units of this Exposure.
         :type units: str
         """
-        if units is not None and units.lower() not in supported_units:
-            raise ValueError("Invalid value for exposure unit, must be ugm3 or ppm")
 
         self._units = units
 
@@ -113,9 +111,4 @@ class Exposure(Model):
         :param exposure_type: The exposure_type of this Exposure.
         :type exposure_type: str
         """
-        supported_types = ['pm25', 'o3']
-        if exposure_type is not None and exposure_type.lower() not in supported_types:
-            raise ValueError("Invalid value for exposure_types, must be pm25 or o3")
-
         self._exposure_type = exposure_type
-

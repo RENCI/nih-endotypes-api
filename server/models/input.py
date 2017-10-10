@@ -15,42 +15,43 @@ class Input(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, date_of_birth: date = None, race: str = None, sex: str = None, model_type: str = None, visits: List[Visit] = None):
-    """
-    Input - a model defined in Swagger
+    def __init__(self, date_of_birth: date = None, race: str = None, sex: str = None,
+                        model_type: str = None, visits: List[Visit] = None):
+        """
+        Input - a model defined in Swagger
 
-    :param date_of_birth: The date_of_birth of this Input.
-    :type date_of_birth: date
-    :param race: The race of this Input.
-    :type race: str
-    :param sex: The sex of this Input.
-    :type sex: str
-    :param model_type: The model_type of this Input.
-    :type model_type: str
-    :param visits: The visits of this Input.
-    :type visits: List[Visit]
-    """
-    self.swagger_types = {
-        'date_of_birth': date,
-        'race': str,
-        'sex': str,
-        'model_type': str,
-        'visits': List[Visit]
-    }
+        :param date_of_birth: The date_of_birth of this Input.
+        :type date_of_birth: date
+        :param race: The race of this Input.
+        :type race: str
+        :param sex: The sex of this Input.
+        :type sex: str
+        :param model_type: The model_type of this Input.
+        :type model_type: str
+        :param visits: The visits of this Input.
+        :type visits: List[Visit]
+        """
+        self.swagger_types = {
+            'date_of_birth': date,
+            'race': str,
+            'sex': str,
+            'model_type': str,
+            'visits': List[Visit]
+        }
 
-    self.attribute_map = {
-        'date_of_birth': 'date_of_birth',
-        'race': 'race',
-        'sex': 'sex',
-        'model_type': 'model_type',
-        'visits': 'visits'
-    }
+        self.attribute_map = {
+            'date_of_birth': 'date_of_birth',
+            'race': 'race',
+            'sex': 'sex',
+            'model_type': 'model_type',
+            'visits': 'visits'
+        }
 
-    self._date_of_birth = date_of_birth
-    self._race = race
-    self._sex = sex
-    self._model_type = model_type
-    self._visits = visits
+        self._date_of_birth = date_of_birth
+        self._race = race
+        self._sex = sex
+        self._model_type = model_type
+        self._visits = visits
 
     @classmethod
     def from_dict(cls, dikt) -> 'Input':
@@ -124,34 +125,36 @@ class Input(Model):
         :param sex: The sex of this Input.
         :type sex: str
         """
-        if sex is not None and not re.search('^(F|M|Female|Male|FEMALE|MALE)$', sex):
-            raise ValueError("Invalid value for `sex`, must be following pattern or equal to `/^(F|M|Female|Male|FEMALE|MALE)$/`")
+        if sex is not None and not re.search('^(F|M|f|m|Female|Male|FEMALE|MALE)$', sex):
+            raise ValueError("Invalid value for 'sex', must be following pattern or equal "
+                             "to `/^(F|M|Female|Male|FEMALE|MALE)$/`")
 
         self._sex = sex
 
     @property
     def model_type(self) -> str:
-    """
-    Gets the model_type of this Input.
+        """
+        Gets the model_type of this Input.
 
-    :return: The model_type of this Input.
-    :rtype: str
-    """
-    return self._model_type
+        :return: The model_type of this Input.
+        :rtype: str
+        """
+        return self._model_type
 
     @model_type.setter
     def model_type(self, model_type: str):
-    """
-    Sets the model_type of this Input.
+        """
+        Sets the model_type of this Input.
 
-    :param model_type: The model_type of this Input.
-    :type model_type: str
-    """
-    if model_type is not None and not re.search('^[M|m][0-9]$', model_type):
-        raise ValueError(
-        "Invalid value for `model_type`, must be a follow pattern or equal to `/^[M|m][0-9]$/`")
+        :param model_type: The model_type of this Input.
+        :type model_type: str
+        """
+        if model_type is not None and not re.search('^[M|m][0-9]$', model_type):
+            raise ValueError(
+            "Invalid value for 'model_type', must be following pattern or "
+            "equal to `/^[M|m][0-9]$/`")
 
-    self._model_type = model_type
+        self._model_type = model_type
 
 
     @property
@@ -174,4 +177,3 @@ class Input(Model):
         """
 
         self._visits = visits
-

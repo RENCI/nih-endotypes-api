@@ -61,11 +61,9 @@ definitions:
         type: "string"
         format: "date-time"
       lat:
-        type: "number"
-        format: "float"
+        type: "string"
       lon:
-        type: "number"
-        format: "float"
+        type: "string"
       visit_type:
         type: "string"
         pattern: "^(INPATIENT|OUTPATIENT|EMERGENCY|inpatient|outpatient|emergency)$"
@@ -82,7 +80,7 @@ definitions:
         type: "string"
       sex:
         type: "string"
-        pattern: "^(F|M|Female|Male|FEMALE|MALE)$"
+        pattern: "^(F|M|f|m|Female|Male|FEMALE|MALE)$"
       model_type:
         type: "string"
         pattern: "^[M|m][0-9]$"
