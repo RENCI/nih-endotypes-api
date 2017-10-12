@@ -1,7 +1,8 @@
 ---
 swagger: "2.0"
 info:
-  description: "NIH Endotypes API - Refer to <a href=\"https://docs.google.com/document/d/1gtkYf6ITfexxEQj9WYPW8iqskT-tZh84LnhtLTmboAA/edit\">User Manual</a> on how to use the API."
+  description: "NIH Endotypes API - Refer to <a href=\\\"https://docs.google.com/document/d/1gtkYf6ITfexxEQj9WYPW8iqskT-tZh84LnhtLTmboAA/edit\\\
+    \">User Manual</a> on how to use the API."
   version: "1.0.0"
   title: "NIH Endotypes API"
   termsOfService: "None"
@@ -19,26 +20,27 @@ schemes:
 paths:
   /endotypes:
     post:
-      summary: "Get list of endotypes based on input"
-      description: "Get list of endotypes based on input"
-      operationId: "endotypes_get"
-      produces:
-        - "application/json"
+      summary: "Get list of endotypes based on input as a POST request"
+      description: "list of endotypes based on input\n@input\n- JSON object with required\
+        \ input\n\n@return\n- JSON object that returns array of predicted endotypes\n"
+      operationId: "endotypes_post"
       consumes:
-        - "application/json"
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-        - in: "body"
-          name: "input"
-          required: true
-          schema:
-            $ref: "#/definitions/input"
+      - in: "body"
+        name: "input"
+        required: true
+        schema:
+          $ref: "#/definitions/input"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/inline_response_200"
+              $ref: "#/definitions/response_200"
         400:
           description: "Invalid parameter"
         404:
@@ -50,11 +52,15 @@ definitions:
   exposure:
     properties:
       value:
-        type: "string"
+        type: "number"
+        format: "float"
+        example: 33.3
       units:
         type: "string"
+        example: "ugm3"
       exposure_type:
         type: "string"
+        example: "pm25"
   visit:
     properties:
       time:
@@ -62,13 +68,21 @@ definitions:
         format: "date-time"
       lat:
         type: "string"
+        example: "20"
       lon:
         type: "string"
+        example: "20"
       visit_type:
         type: "string"
+        example: "INPATIENT"
         pattern: "^(INPATIENT|OUTPATIENT|EMERGENCY|inpatient|outpatient|emergency)$"
+        x-regex: "^(INPATIENT|OUTPATIENT|EMERGENCY|inpatient|outpatient|emergency)$"
+        x-modifiers: []
       icd_codes:
         type: "string"
+        example: "ICD9:V12,ICD9:E002"
+        description: "comma-separated standard ICD-9 or ICD-10 codes associated with\
+          \ the visit"
       exposure:
         $ref: "#/definitions/exposure"
   input:
@@ -78,12 +92,23 @@ definitions:
         format: "date"
       race:
         type: "string"
+        example: "1"
+        description: "race code ranged from 1 to 6 with the following mapping:\n1:\
+          \ WHITE OR CAUCASIAN\n2: BLACK OR AFRICAN AMERICAN\n3: AMERICAN INDIAN OR\
+          \ ALASKA NATIVE\n4: ASIAN\n5: NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER\n\
+          6: OTHER/HISPANIC\n"
       sex:
         type: "string"
-        pattern: "^(F|M|f|m|Female|Male|FEMALE|MALE)$"
+        example: "M"
+        pattern: "^(F|M|f|m)$"
+        x-regex: "^(F|M|f|m)$"
+        x-modifiers: []
       model_type:
         type: "string"
+        example: "M0"
         pattern: "^[M|m][0-9]$"
+        x-regex: "^[M|m][0-9]$"
+        x-modifiers: []
       visits:
         type: "array"
         items:
@@ -96,7 +121,7 @@ definitions:
       end_time:
         type: "string"
         format: "date-time"
-  inline_response_200:
+  response_200:
     properties:
       endotype_id:
         type: "string"

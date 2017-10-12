@@ -3,7 +3,7 @@ import json
 import re
 from models.input import Input
 from models.exposure import Exposure
-from models.inline_response200 import InlineResponse200
+from models.response200 import Response200
 from datetime import date, datetime
 from typing import List, Dict
 from six import iteritems
@@ -45,15 +45,30 @@ def validate_lat_lon(lat, lon):
 
     return 'OK', 200, 'OK'
 
+def validate_icd_codes(codes):
+    if codes is not None:
+        code_strs = codes.split(',')
+        icd9_re = '(icd|ICD)9:(V\d{2}(\.\d{1,2})?|\d{3}(\.\d{1,2})?|E\d{3}(\.\d)?)'
+        icd10_re = '(icd|ICD)10:[A-TV-Z][0-9][A-Z0-9](\.[A-Z0-9]{1,4})?'
+        re_str = '^' + icd9_re + '|' + icd10_re + '$'
+        for cstr in code_strs:
+            cstr = cstr.strip()
+            if not re.match(re_str, cstr):
+                return 'Invalid Parameter', 400, \
+                       {'error': "Invalid value for icd_codes, must be comma separated and "
+                                 "conforming to ICD9 or ICD10 standard"}
+
+    return 'OK', 200, 'OK'
 
 
-def endotypes_get(input):
+def endotypes_post(input):
     """
-    list of endotypes
+    Get list of endotypes based on input as a POST request
+    list of endotypes based on input that returns array of predicted endotypes
     :param input:
     :type input: dict | bytes
 
-    :rtype: List[InlineResponse200]
+    :rtype: List[Response200]
     """
     if connexion.request.is_json:
         input = Input.from_dict(connexion.request.get_json())
@@ -64,6 +79,10 @@ def endotypes_get(input):
 
             error, status, dict = validate_exposure_type_and_units(v.exposure.exposure_type,
                                                                    v.exposure.units)
+            if status != 200:
+                return error, status, dict
+
+            error, status, dict = validate_icd_codes(v.icd_codes)
             if status != 200:
                 return error, status, dict
 

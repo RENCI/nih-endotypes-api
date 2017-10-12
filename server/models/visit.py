@@ -177,9 +177,6 @@ class Visit(Model):
         :param icd_codes: The icd_codes of this Visit.
         :type icd_codes: str
         """
-        # validate pass in icd_codes str has to be comma separated
-        if icd_codes is not None and not re.search('^[-\w\s]+(,[-\w\s]+)*', icd_codes):
-            raise ValueError("Invalid value for icd_codes, must be comma separated icd codes")
         self._icd_codes = icd_codes
 
     @property

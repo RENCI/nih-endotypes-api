@@ -5,5 +5,5 @@ from __future__ import absolute_import
 from models.input import Input
 from models.endotypes_period import EndotypesPeriod
 from models.exposure import Exposure
-from models.inline_response200 import InlineResponse200
+from models.response200 import Response200
 from models.visit import Visit

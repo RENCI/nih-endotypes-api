@@ -2,8 +2,8 @@
 
 from __future__ import absolute_import
 
-from models.inline_response200 import InlineResponse200
-from models.input import Input
+from server.models.input import Input
+from server.models.response200 import Response200
 from . import BaseTestCase
 from six import BytesIO
 from flask import json
@@ -12,11 +12,11 @@ from flask import json
 class TestDefaultController(BaseTestCase):
     """ DefaultController integration test stubs """
 
-    def test_endotypes_get(self):
+    def test_endotypes_post(self):
         """
-        Test case for endotypes_get
+        Test case for endotypes_post
 
-        Get list of endotypes based on input
+        Get list of endotypes based on input as a POST request
         """
         input = Input()
         response = self.client.open('/v1/endotypes',

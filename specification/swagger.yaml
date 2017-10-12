@@ -1,82 +1,114 @@
----
 swagger: "2.0"
 info:
-  description: "NIH Endotypes API"
-  version: "1.0.0"
-  title: "NIH Endotypes API"
-  termsOfService: "None"
+  version: 1.0.0
+  title: NIH Endotypes API
+  description: NIH Endotypes API - Refer to <a href=\"https://docs.google.com/document/d/1gtkYf6ITfexxEQj9WYPW8iqskT-tZh84LnhtLTmboAA/edit\">User Manual</a> on how to use the API.
+  termsOfService: None
   contact:
-    name: "Hong Yi"
-    url: "https://github.com/renci/nih-endotypes-api"
-    email: "hongyi@renci.org"
+    name: Hong Yi
+    url: https://github.com/renci/nih-endotypes-api
+    email: hongyi@renci.org
   license:
-    name: "MIT"
-    url: "http://opensource.org/licenses/MIT"
-host: "localhost:7000"
-basePath: "/v1"
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+host: endotypes.renci.org
+basePath: /v1
 schemes:
-- "https"
+  - https
 paths:
   /endotypes:
     post:
-      summary: "Get list of endotypes based on input"
-      description: "Get list of endotypes based on input"
-      operationId: "endotypes_get"
+      summary: Get list of endotypes based on input as a POST request
+      description: |
+        list of endotypes based on input
+        @input
+        - JSON object with required input
+
+        @return
+        - JSON object that returns array of predicted endotypes
       produces:
-        - "application/json"
+        - application/json
       consumes:
-        - "application/json"
+        - application/json
       parameters:
-        - in: "body"
-          name: "input"
+        - in: body
+          name: input
           required: true
           schema:
-            $ref: "#/definitions/input"
+            $ref: '#/definitions/input'
       responses:
-        200:
-          description: "OK"
+        '200':
+          description: OK
           schema:
-            type: "array"
+            type: array
             items:
-              $ref: "#/definitions/inline_response_200"
-        400:
-          description: "Invalid parameter"
-        404:
-          description: "No endotypes found"
-        500:
-          description: "Server error"
-      x-swagger-router-controller: "controllers.default_controller"
+              $ref: "#/definitions/response_200"
+        '400':
+          description: Invalid parameter
+        '404':
+          description: No endotypes found
+        '500':
+          description: Server error
 definitions:
   exposure:
     properties:
       value:
-        type: "string"
+        type: number
+        format: float
+        example: 33.3
       units:
-        type: "string"
+        type: string
+        example: ugm3
       exposure_type:
-        type: "string"
+        type: string
+        example: pm25
   visit:
     properties:
       time:
-        type: "string"
-      zip:
-        type: "string"
+        type: string
+        format: date-time
+      lat:
+        type: string
+        example: 20
+      lon:
+        type: string
+        example: 20
       visit_type:
-        type: "string"
-      icd_code:
-        type: "string"
+        type: string
+        pattern: "^(INPATIENT|OUTPATIENT|EMERGENCY|inpatient|outpatient|emergency)$"
+        example: INPATIENT
+      icd_codes:
+        type: string
+        description: comma-separated standard ICD-9 or ICD-10 codes associated with the visit
+        example: "ICD9:V12,ICD9:E002"
       exposure:
         $ref: "#/definitions/exposure"
   input:
     properties:
       date_of_birth:
-        type: "string"
+        type: string
+        format: date
       race:
-        type: "string"
+        type: string
+        example: 1
+        description: |
+          race code ranged from 1 to 6 with the following mapping:
+          1: WHITE OR CAUCASIAN
+          2: BLACK OR AFRICAN AMERICAN
+          3: AMERICAN INDIAN OR ALASKA NATIVE
+          4: ASIAN
+          5: NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER
+          6: OTHER/HISPANIC
       sex:
-        type: "string"
+        type: string
+        pattern: "^(F|M|f|m)$"
+        example: M
+      model_type:
+        type: string
+        pattern: "^[M|m][0-9]$"
+        example: M0
       visits:
-        type: "array"
+        type: array
         items:
           $ref: "#/definitions/visit"
   endotypes_period:
@@ -87,11 +119,13 @@ definitions:
       end_time:
         type: "string"
         format: "date-time"
-  inline_response_200:
+  response_200:
     properties:
       endotype_id:
         type: "string"
       endotype_description:
+        type: "string"
+      endotype_evidence:
         type: "string"
       periods:
         type: "array"
