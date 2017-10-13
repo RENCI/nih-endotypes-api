@@ -86,22 +86,48 @@ def endotypes_post(input):
             if status != 200:
                 return error, status, dict
 
-        # input values can be retrieved by
-        # input.date_of_birth
-        # input.race
-        # input.sex
-        # for v in input.visits:
-        #    str += v.icd_codes + ', ' + v.time + ', ' + v.visit_type + ', ' + v.lat + ', ' + v.lon
-        #    str += v.exposure.value + ', ' + v.exposure.units + ', ' + v.exposure.exposure_type
+        # write request input json to r-models/input.json for model to consume
+        input_data = {}
+        input_data['date_of_birth'] = str(input.date_of_birth)
+        input_data['race'] = input.race
+        input_data['sex'] = input.sex
+        input_data['model_type'] = input.model_type
+        visit_list = []
+        for v in input.visits:
+            visit_dict = {}
+            visit_dict['visit_type'] = v.visit_type
+            visit_dict['time'] = str(v.time)
+            visit_dict['lat'] = float(v.lat)
+            visit_dict['lon'] = float(v.lon)
+
+            code_list = []
+            code_strs = v.icd_codes.split(',')
+            for cstr in code_strs:
+                cstr = cstr.strip()
+                code_list.append(cstr)
+            visit_dict['icd_codes'] = code_list
+            exp_dict = {
+                'exposure_type': v.exposure._exposure_type,
+                'units': v.exposure.units,
+                'value': v.exposure.value
+            }
+            visit_dict['exposure'] = exp_dict
+            visit_list.append(visit_dict)
+
+        input_data['visits'] = visit_list
+
+        with open('r-model/input.json', 'w') as f:
+            f.write(json.dumps(input_data, indent=4))
+
 
         result = ''
-        with open('results.json', 'r') as f:
+        with open('r-model/output.json', 'r') as f:
             result = json.load(f)
 
         if result:
             ret_dict = {"output": result}
         else:
-            ret_dict = connexion.request.get_json()
+            ret_dict = {"input": connexion.request.get_json()}
 
         return ret_dict
 
