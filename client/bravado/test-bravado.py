@@ -8,7 +8,6 @@ from bravado.client import SwaggerClient
 
 server_swagger_url = 'https://endotypes.renci.org/v1/swagger.json'
 
-# defaults to github_swagger, but should be changed to local_swagger if doing development work
 client = SwaggerClient.from_url(
     server_swagger_url
 )
