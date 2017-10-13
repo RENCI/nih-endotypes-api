@@ -38,9 +38,7 @@ paths:
         200:
           description: "OK"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/response_200"
+            $ref: "#/definitions/response_200"
         400:
           description: "Invalid parameter"
         404:
@@ -50,6 +48,8 @@ paths:
       x-swagger-router-controller: "controllers.default_controller"
 definitions:
   exposure:
+    type: "object"
+    additionalProperties: True
     properties:
       value:
         type: "number"
@@ -62,10 +62,12 @@ definitions:
         type: "string"
         example: "pm25"
   visit:
+    type: "object"
+    additionalProperties: true
     properties:
       time:
         type: "string"
-        format: "date-time"
+        example: "2017-10-12T21:12:29.451Z"
       lat:
         type: "string"
         example: "20"
@@ -86,10 +88,12 @@ definitions:
       exposure:
         $ref: "#/definitions/exposure"
   input:
+    type: "object"
+    additionalProperties: true
     properties:
       date_of_birth:
         type: "string"
-        format: "date"
+        example: '2017-10-04'
       race:
         type: "string"
         example: "1"
@@ -114,22 +118,28 @@ definitions:
         items:
           $ref: "#/definitions/visit"
   endotypes_period:
+    type: "object"
+    additionalProperties: True
     properties:
       start_time:
         type: "string"
-        format: "date-time"
       end_time:
         type: "string"
-        format: "date-time"
   response_200:
+    type: "object"
     properties:
-      endotype_id:
-        type: "string"
-      endotype_description:
-        type: "string"
-      endotype_evidence:
-        type: "string"
-      periods:
-        type: "array"
+      output:
+        type: array
         items:
-          $ref: "#/definitions/endotypes_period"
+            type: object
+            properties:
+              endotype_id:
+                type: "string"
+              endotype_description:
+                type: "string"
+              endotype_evidence:
+                type: "string"
+              periods:
+                type: "array"
+                items:
+                  $ref: "#/definitions/endotypes_period"

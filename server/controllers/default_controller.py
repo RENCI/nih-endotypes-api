@@ -99,8 +99,7 @@ def endotypes_post(input):
             result = json.load(f)
 
         if result:
-            ret_dict = {"input": connexion.request.get_json(),
-                        "output": result}
+            ret_dict = {"output": result}
         else:
             ret_dict = connexion.request.get_json()
 
