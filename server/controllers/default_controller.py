@@ -11,21 +11,24 @@ from util import deserialize_date, deserialize_datetime
 from flask import Response
 
 
-def validate_exposure_type_and_units(ex_type, ex_unit):
+def validate_exposure_type_and_units(exs = []):
     supported_units = {'pm25': 'ugm3', 'o3': 'ppm'}
-    if ex_type is None:
-        return 'Invalid Parameter', 400, {'error': 'exposure_type cannot be empty'}
+    for ex in exs:
+        ex_type = ex.exposure_type
+        ex_unit = ex.units
+        if ex_type is None:
+            return 'Invalid Parameter', 400, {'error': 'exposure_type cannot be empty'}
 
-    if ex_unit is None:
-        return 'Invalid Parameter', 400, {'error': 'exposure units cannot be empty'}
+        if ex_unit is None:
+            return 'Invalid Parameter', 400, {'error': 'exposure units cannot be empty'}
 
-    if ex_type.lower() not in supported_units.keys():
-        print (ex_type + ', ' + ex_unit + '.......Updated')
-        return 'Invalid Parameter', 400, {'error': 'exposure types must be pm25 or o3'}
+        if ex_type.lower() not in supported_units.keys():
+            print (ex_type + ', ' + ex_unit + '.......Updated')
+            return 'Invalid Parameter', 400, {'error': 'exposure types must be pm25 or o3'}
 
-    if ex_unit.lower() != supported_units[ex_type]:
-        return 'Invalid Parameter', 400, {'error': 'Invalid value for exposure unit, must be ugm3 '
-                                                   'for pm25 exposure type or ppm for o3 exposure type'}
+        if ex_unit.lower() != supported_units[ex_type]:
+            return 'Invalid Parameter', 400, {'error': 'Invalid value for exposure unit, must be ugm3 '
+                                                       'for pm25 exposure type or ppm for o3 exposure type'}
 
     return 'OK', 200, 'OK'
 
@@ -77,8 +80,7 @@ def endotypes_post(input):
             if status != 200:
                 return error, status, dict
 
-            error, status, dict = validate_exposure_type_and_units(v.exposure.exposure_type,
-                                                                   v.exposure.units)
+            error, status, dict = validate_exposure_type_and_units(v.exposures)
             if status != 200:
                 return error, status, dict
 
@@ -106,12 +108,15 @@ def endotypes_post(input):
                 cstr = cstr.strip()
                 code_list.append(cstr)
             visit_dict['icd_codes'] = code_list
-            exp_dict = {
-                'exposure_type': v.exposure._exposure_type,
-                'units': v.exposure.units,
-                'value': v.exposure.value
-            }
-            visit_dict['exposure'] = exp_dict
+            ex_list = []
+            for ex in v.exposures:
+                exp_dict = {
+                    'exposure_type': ex.exposure_type,
+                    'units': ex.units,
+                    'value': ex.value
+                }
+                ex_list.append(exp_dict)
+            visit_dict['exposures'] = ex_list
             visit_list.append(visit_dict)
 
         input_data['visits'] = visit_list
