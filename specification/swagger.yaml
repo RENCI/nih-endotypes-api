@@ -50,7 +50,6 @@ paths:
 definitions:
   exposure:
     type: "object"
-    additionalProperties: True
     properties:
       value:
         type: number
@@ -64,7 +63,6 @@ definitions:
         example: pm25
   visit:
     type: "object"
-    additionalProperties: true
     properties:
       time:
         type: string
@@ -83,11 +81,12 @@ definitions:
         type: string
         description: comma-separated standard ICD-9 or ICD-10 codes associated with the visit
         example: "ICD9:V12,ICD9:E002"
-      exposure:
-        $ref: "#/definitions/exposure"
+      exposures:
+        type: "array"
+        items:
+          $ref: "#/definitions/exposure"
   input:
     type: "object"
-    additionalProperties: true
     properties:
       date_of_birth:
         type: string
@@ -117,7 +116,6 @@ definitions:
           $ref: "#/definitions/visit"
   endotypes_period:
     type: "object"
-    additionalProperties: True
     properties:
       start_time:
         type: "string"

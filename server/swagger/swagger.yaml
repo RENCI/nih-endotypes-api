@@ -49,7 +49,6 @@ paths:
 definitions:
   exposure:
     type: "object"
-    additionalProperties: True
     properties:
       value:
         type: "number"
@@ -63,7 +62,6 @@ definitions:
         example: "pm25"
   visit:
     type: "object"
-    additionalProperties: true
     properties:
       time:
         type: "string"
@@ -85,15 +83,16 @@ definitions:
         example: "ICD9:V12,ICD9:E002"
         description: "comma-separated standard ICD-9 or ICD-10 codes associated with\
           \ the visit"
-      exposure:
-        $ref: "#/definitions/exposure"
+      exposures:
+        type: "array"
+        items:
+          $ref: "#/definitions/exposure"
   input:
     type: "object"
-    additionalProperties: true
     properties:
       date_of_birth:
         type: "string"
-        example: '2017-10-04'
+        example: "2017-10-04"
       race:
         type: "string"
         example: "1"
@@ -119,7 +118,6 @@ definitions:
           $ref: "#/definitions/visit"
   endotypes_period:
     type: "object"
-    additionalProperties: True
     properties:
       start_time:
         type: "string"
@@ -129,17 +127,18 @@ definitions:
     type: "object"
     properties:
       output:
-        type: array
+        type: "array"
         items:
-            type: object
-            properties:
-              endotype_id:
-                type: "string"
-              endotype_description:
-                type: "string"
-              endotype_evidence:
-                type: "string"
-              periods:
-                type: "array"
-                items:
-                  $ref: "#/definitions/endotypes_period"
+          $ref: "#/definitions/response_200_output"
+  response_200_output:
+    properties:
+      endotype_id:
+        type: "string"
+      endotype_description:
+        type: "string"
+      endotype_evidence:
+        type: "string"
+      periods:
+        type: "array"
+        items:
+          $ref: "#/definitions/endotypes_period"
