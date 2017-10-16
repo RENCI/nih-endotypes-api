@@ -19,11 +19,11 @@ endotypes_result = client.endotypes.endotypes_post(input={
   "sex": "M",
   "visits": [
     {
-      "exposure": {
+      "exposures": [{
         "exposure_type": "pm25",
         "units": "ugm3",
         "value": 33.3
-      },
+      }],
       "icd_codes": "ICD9:V12,ICD9:E002",
       "lat": "20",
       "lon": "20",
