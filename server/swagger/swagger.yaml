@@ -53,10 +53,10 @@ definitions:
       value:
         type: "number"
         format: "float"
-        example: 33.3
+        example: 2
       units:
         type: "string"
-        example: "ugm3"
+        example: ""
       exposure_type:
         type: "string"
         example: "pm25"
