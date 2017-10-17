@@ -20,14 +20,14 @@ def validate_exposure_type_and_units(exs = []):
         if ex_type is None:
             return 'Invalid Parameter', 400, {'error': 'exposure_type cannot be empty'}
 
-        if ex_unit is None:
-            return 'Invalid Parameter', 400, {'error': 'exposure units cannot be empty'}
+        # if ex_unit is None:
+        #     return 'Invalid Parameter', 400, {'error': 'exposure units cannot be empty'}
 
         if ex_type.lower() not in supported_units.keys():
             print (ex_type + ', ' + ex_unit + '.......Updated')
             return 'Invalid Parameter', 400, {'error': 'exposure types must be pm25 or o3'}
 
-        if ex_unit.lower() != supported_units[ex_type]:
+        if ex_unit and ex_unit.lower() != supported_units[ex_type]:
             return 'Invalid Parameter', 400, {'error': 'Invalid value for exposure unit, must be ugm3 '
                                                        'for pm25 exposure type or ppm for o3 exposure type'}
 
