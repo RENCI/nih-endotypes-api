@@ -65,7 +65,7 @@ definitions:
     properties:
       time:
         type: "string"
-        example: "2017-10-12T21:12:29.451Z"
+        example: "2017-10-12 21:12:29"
       lat:
         type: "string"
         example: "20"

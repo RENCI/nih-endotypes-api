@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PATH_TO_DOCKERFILE=../server/
-LOCAL_PORT=7000
+LOCAL_PORT=5000
 DOCKER_NETWORK=bridge
 PATH_TO_SSL_CERTS=''
 
@@ -18,14 +18,14 @@ if [[ ! -z ${PATH_TO_SSL_CERTS} ]]; then
         -p ${LOCAL_PORT}:5000 \
         --network=${DOCKER_NETWORK} \
         -v ${PATH_TO_SSL_CERTS}:/certs \
-        nih-exdotypes
+        nih-endotypes
     echo "NIH Endotypes API running at https://localhost:"${LOCAL_PORT}"/v1/ui/#/default"
 else
     docker run -d --name nih-endotypes \
         -p ${LOCAL_PORT}:5000 \
         --network=${DOCKER_NETWORK} \
         nih-endotypes
-    echo "NIH Exposures API running at http://localhost:"${LOCAL_PORT}"/v1/ui/#/default"
+    echo "NIH Endotypes API running at http://localhost:"${LOCAL_PORT}"/v1/ui/#/default"
 fi
 
 exit 0;

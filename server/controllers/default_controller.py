@@ -1,10 +1,11 @@
 import connexion
 import json
 import re
+import subprocess
 from models.input import Input
 from models.exposure import Exposure
 from models.response200 import Response200
-from datetime import date, datetime
+import datetime
 from typing import List, Dict
 from six import iteritems
 from util import deserialize_date, deserialize_datetime
@@ -32,11 +33,36 @@ def validate_exposure_type_and_units(exs = []):
 
     return 'OK', 200, 'OK'
 
+def validate_date_of_birth(date):
+    if date is None:
+        return 'Invalid Parameter', 400, {'error': 'date_of_birth cannot be empty'}
+
+    try:
+        valid_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+        today_date = str(datetime.date.today())
+        if date >= today_date:
+            return 'Invalid Parameter', 400, {'error': 'date_of_birth cannot be a future date'}
+    except ValueError as ex:
+        return 'Invalid Parameter', 400, {'error': ex}
+
+    return 'OK', 200, 'OK'
+
+def validate_time(time):
+    if time is None:
+        return 'Invalid Parameter', 400, {'error': 'time cannot be empty'}
+
+    try:
+        valid_time = datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+    except ValueError as ex:
+        return 'Invalid Parameter', 400, {'error': ex}
+
+    return 'OK', 200, 'OK'
+
 def validate_lat_lon(lat, lon):
     if lat is None:
-        return 'Invalid Parameter', 400, {'error': "latitude cannot be empty"}
+        return 'Invalid Parameter', 400, {'error': 'latitude cannot be empty'}
     if lon is None:
-        return 'Invalid Parameter', 400, {'error': "longitude cannot be empty"}
+        return 'Invalid Parameter', 400, {'error': 'longitude cannot be empty'}
 
     # check latitude
     if re.match("^(\+|-)?(?:90(?:(?:\.0{1,})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,})?))$", lat) is None:
@@ -75,6 +101,10 @@ def endotypes_post(input):
     """
     if connexion.request.is_json:
         input = Input.from_dict(connexion.request.get_json())
+        error, status, dict = validate_date_of_birth(input.date_of_birth)
+        if status != 200:
+            return error, status, dict
+
         for v in input.visits:
             error, status, dict = validate_lat_lon(v.lat, v.lon)
             if status != 200:
@@ -85,6 +115,10 @@ def endotypes_post(input):
                 return error, status, dict
 
             error, status, dict = validate_icd_codes(v.icd_codes)
+            if status != 200:
+                return error, status, dict
+
+            error, status, dict = validate_time(v.time)
             if status != 200:
                 return error, status, dict
 
@@ -124,17 +158,29 @@ def endotypes_post(input):
         with open('r-model/input.json', 'w') as f:
             f.write(json.dumps(input_data, indent=4))
 
+        # invoke r-script for model-generated decision tree for creating endotypes output
+        proc = subprocess.Popen(['sh', 'run-r-model.sh'], stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+        stdout, stderr = proc.communicate()
 
-        result = ''
-        with open('r-model/output.json', 'r') as f:
-            result = json.load(f)
-
-        if result:
-            ret_dict = {"output": result}
+        if proc.returncode:
+            return 'server error', 500, {'error': stderr}
         else:
-            ret_dict = {"input": connexion.request.get_json()}
+            result = ''
+            with open('r-model/output.json', 'r') as f:
+                result = json.load(f)
 
-        return ret_dict
+            if result:
+                if 'error' in result:
+                    if result['error'][-1] == '\n':
+                        result['error'] = result['error'][0:-1]
+                    return 'server error', 500, {'error': result['error']}
+                else:
+                    ret_dict = {"output": result}
+            else:
+                ret_dict = {"input": connexion.request.get_json()}
+
+            return ret_dict
 
     else:
         return 'Invalid Parameter', 400, {'error': "Please fill out a JSON request body as input "
