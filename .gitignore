@@ -4,3 +4,6 @@ swagger-editor/swagger-editor/
 connexion.ini
 venv/
 __pycache__/
+server/r-model/input.json
+server/r-model/output.json
+server/r-model/model.RData
