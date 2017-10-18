@@ -1,4 +1,4 @@
-FROM python:3
+FROM r-model:latest
 
 # Set default environment variables
 # [connexion/api-server]
@@ -15,8 +15,8 @@ ENV SWAGGER_HOST=localhost:5000
 COPY . /nih-endotypes
 WORKDIR /nih-endotypes
 
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+RUN pip3 install --upgrade pip \
+    && pip3 install -r requirements.txt
 
 ENTRYPOINT ["/nih-endotypes/docker-entrypoint.sh"]
 EXPOSE 5000

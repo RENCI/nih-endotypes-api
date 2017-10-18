@@ -36,7 +36,7 @@ if [[ "$1" = 'app.py' ]]; then
     fi
 
     # run the app
-    python app.py
+    python3 app.py
 else
     exec "$@"
 fi
