@@ -21,13 +21,13 @@ endotypes_result = client.endotypes.endotypes_post(input={
     {
       "exposures": [{
         "exposure_type": "pm25",
-        "units": "ugm3",
-        "value": 33.3
+        "units": "",
+        "value": 2
       }],
       "icd_codes": "ICD9:V12,ICD9:E002",
       "lat": "20",
       "lon": "20",
-      "time": "2017-10-12T21:12:29.451Z",
+      "time": "2017-10-12 21:12:29",
       "visit_type": "INPATIENT"
     }
   ]
