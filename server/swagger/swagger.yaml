@@ -12,7 +12,7 @@ info:
   license:
     name: "MIT"
     url: "http://opensource.org/licenses/MIT"
-host: "localhost:7000"
+host: "endotypes.renci.org"
 basePath: "/v1"
 schemes:
 - "https"
