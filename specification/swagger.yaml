@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   version: 1.0.0
   title: NIH Endotypes API
-  description: NIH Endotypes API - Refer to <a href=\"https://docs.google.com/document/d/1gtkYf6ITfexxEQj9WYPW8iqskT-tZh84LnhtLTmboAA/edit\">User Manual</a> on how to use the API.
+  description: NIH Endotypes API - Refer to <a href=\"https://github.com/NCATS-Tangerine/cq-notebooks/blob/master/Green_CQs/GreenTeam_Endotype_Data_Documentation/README.md\">User Manual</a> on how to use the API.
   termsOfService: None
   contact:
     name: Hong Yi
